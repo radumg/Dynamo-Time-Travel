@@ -23,12 +23,12 @@ namespace TimeTravel
 
         public static async void OnTakeSnapshot(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Taking snapshot");
+            TimeTravelViewExtension.TakeSnapshot();
         }
 
         public static async void OnLoadSnapshot(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Loading snapshot");
+            TimeTravelViewExtension.LoadSnapshot();
         }
     }
 }

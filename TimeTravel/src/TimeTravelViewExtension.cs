@@ -40,5 +40,34 @@ namespace TimeTravel
         {
         }
 
+        public static void TakeSnapshot()
+        {
+            var inputNodes = dynamoViewModel.CurrentSpaceViewModel.Nodes.Where(x => x.IsSetAsInput);
+
+            var snapshot = new Snapshot(inputNodes.ToList());
+            var saved = snapshot.ToJsonFile();
+            MessageBox.Show(snapshot.GenerateSnapshotFilename());
+        }
+
+        public static void LoadSnapshot()
+        {
+            var filepath = Utils.AskUserForFile();
+            if(String.IsNullOrWhiteSpace(filepath))
+            {
+                MessageBox.Show("Could not load file.");
+                throw new ArgumentNullException(nameof(filepath));
+            }
+
+            var snapshot = Snapshot.FromJsonFile(filepath);
+            foreach (var node in snapshot.Nodes)
+            {
+                var matchingNode = dynamoViewModel.CurrentSpaceViewModel.Nodes.Where(x => x.Id == node.Id).FirstOrDefault();
+                if (matchingNode == null) continue;
+
+                matchingNode.X = node.X;
+                matchingNode.Y = node.Y;
+            }
+        }
+
     }
 }
