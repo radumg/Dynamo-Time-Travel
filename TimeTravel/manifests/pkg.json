@@ -1,0 +1,20 @@
+﻿{
+  "license": "",
+  "file_hash": null,
+  "name": "TimeTravel",
+  "version": "0.1.0",
+  "description": "Save and load presets for inputs in Dynamo",
+  "group": "",
+  "keywords": null,
+  "dependencies": [],
+  "contents": "",
+  "engine_version": "2.0",
+  "engine": "dynamo",
+  "engine_metadata": "",
+  "site_url": "https://github.com/radumg/Dynamo-Time-Travel",
+  "repository_url": "https://github.com/radumg/Dynamo-Time-Travel",
+  "contains_binaries": true,
+  "node_libraries": [
+    
+  ]
+}

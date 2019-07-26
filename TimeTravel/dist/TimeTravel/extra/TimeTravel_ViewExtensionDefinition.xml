@@ -1,0 +1,4 @@
+﻿<ViewExtensionDefinition>
+  <AssemblyPath>..\bin\TimeTravel.dll</AssemblyPath>
+  <TypeName>TimeTravel.TimeTravelViewExtension</TypeName>
+</ViewExtensionDefinition>
