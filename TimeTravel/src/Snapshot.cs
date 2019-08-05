@@ -7,17 +7,18 @@ namespace TimeTravel
 {
     public class Snapshot
     {
-        public readonly List<NodeViewModel> Nodes;
-        public readonly string Author;
-        public readonly DateTime Timestamp;
+        public List<NodePreset> Nodes;
+        public string Author;
+        public DateTime Timestamp;
 
         public Snapshot()
         {
             this.Author = Environment.UserName;
             this.Timestamp = DateTime.UtcNow;
+            this.Nodes = new List<NodePreset>();
         }
 
-        public Snapshot(List<NodeViewModel> nodes) : this()
+        public Snapshot(List<NodePreset> nodes) : this()
         {
             this.Nodes = nodes ?? throw new ArgumentNullException(nameof(nodes));
         }
@@ -30,6 +31,11 @@ namespace TimeTravel
                 filename);
 
             return filepath;
+        }
+
+        public string ToJson()
+        {
+            return Json.ToJson(this);
         }
 
         public string ToJsonFile()

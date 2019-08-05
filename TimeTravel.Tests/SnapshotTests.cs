@@ -2,6 +2,7 @@ using Dynamo.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Linq;
 using TimeTravel;
 
 namespace TimeTravel.Tests
@@ -9,10 +10,7 @@ namespace TimeTravel.Tests
     [TestClass]
     public class SnapshotTests
     {
-        [TestMethod]
-        public void CanMakeNodeViewModel()
-        {
-        }
+        
 
         [TestMethod]
         public void GenerateSnapshotFilename_CanBuildCorrectFilename()
@@ -53,7 +51,14 @@ namespace TimeTravel.Tests
         {
             // Arrange
             var snapshotSource = new Snapshot();
+            var node = new NodePreset()
+            {
+                Id = "1",
+                NodeType = "TestType"
+            };
+            snapshotSource.Nodes.Add(node);
             var filename = snapshotSource.ToJsonFile();
+            var debug = snapshotSource.ToJson();
 
             // Act
             var snapshot = Snapshot.FromJsonFile(filename);
@@ -61,7 +66,11 @@ namespace TimeTravel.Tests
             // Assert
             Assert.IsNotNull(snapshot);
             Assert.IsNotNull(snapshot.Nodes);
+            Assert.AreEqual(1, snapshot.Nodes.Count);
+            Assert.AreEqual(node.Id, snapshot.Nodes.First().Id);
+            Assert.AreEqual(node.NodeType, snapshot.Nodes.First().NodeType);
             Assert.IsInstanceOfType(snapshot, typeof(Snapshot));
+            File.Delete(filename);
         }
     }
 }
