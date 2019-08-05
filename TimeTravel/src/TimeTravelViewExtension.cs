@@ -42,11 +42,14 @@ namespace TimeTravel
 
         public static void TakeSnapshot()
         {
-            var inputNodes = dynamoViewModel.CurrentSpaceViewModel.Nodes.Where(x => x.IsSetAsInput);
+            var inputNodes = dynamoViewModel.CurrentSpaceViewModel.Nodes
+                .Where(x => x.IsSetAsInput)
+                .Select(x=> new NodePreset(x.NodeModel))
+                .ToList();
 
-            var snapshot = new Snapshot(inputNodes.ToList());
+            var snapshot = new Snapshot(inputNodes);
             var saved = snapshot.ToJsonFile();
-            MessageBox.Show(snapshot.GenerateSnapshotFilename());
+            MessageBox.Show($"Snapshot saved to: {snapshot.GenerateSnapshotFilename()}");
         }
 
         public static void LoadSnapshot()
@@ -58,14 +61,27 @@ namespace TimeTravel
                 throw new ArgumentNullException(nameof(filepath));
             }
 
-            var snapshot = Snapshot.FromJsonFile(filepath);
-            foreach (var node in snapshot.Nodes)
+            // attempt to deserialise the snapshot from JSON file
+            Snapshot snapshot=null;
+            try
             {
-                var matchingNode = dynamoViewModel.CurrentSpaceViewModel.Nodes.Where(x => x.Id == node.Id).FirstOrDefault();
+                snapshot = Snapshot.FromJsonFile(filepath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not read the snapshot file, reported error : {ex.Message}");
+            }
+
+            foreach (var nodePreset in snapshot.Nodes)
+            {
+                var matchingNode = dynamoViewModel.CurrentSpaceViewModel.Nodes
+                    .Select(x=>x.NodeModel)
+                    .Where(x => x.GUID.ToString() == nodePreset.Id)
+                    .FirstOrDefault();
+
                 if (matchingNode == null) continue;
 
-                matchingNode.X = node.X;
-                matchingNode.Y = node.Y;
+                matchingNode.SetSize(500, 500);
             }
         }
 

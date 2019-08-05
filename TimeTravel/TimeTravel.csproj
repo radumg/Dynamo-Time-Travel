@@ -61,12 +61,13 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>8.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Events.cs" />
     <Compile Include="src\Json.cs" />
+    <Compile Include="src\NodePreset.cs" />
     <Compile Include="src\Snapshot.cs" />
     <Compile Include="src\TimeTravelViewExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
